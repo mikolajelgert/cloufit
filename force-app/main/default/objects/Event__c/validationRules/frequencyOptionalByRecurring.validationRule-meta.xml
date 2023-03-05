@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>frequencyOptionalByRecurring</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF( Recurring__c = TRUE, 1, 0) 
+&lt;&gt;
+IF(ISBLANK(TEXT(Frequency__c)), 0, 1 )</errorConditionFormula>
+    <errorDisplayField>Frequency__c</errorDisplayField>
+    <errorMessage>Frequency field must be selected when Recurring checkbox is selected.</errorMessage>
+</ValidationRule>

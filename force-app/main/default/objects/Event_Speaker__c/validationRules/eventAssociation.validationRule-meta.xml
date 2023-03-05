@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>eventAssociation</fullName>
+    <active>true</active>
+    <errorConditionFormula>Event__r.Live__c = false</errorConditionFormula>
+    <errorDisplayField>Event__c</errorDisplayField>
+    <errorMessage>Speaker can only be associated with the Event whose Event Live Checkbox is checked.</errorMessage>
+</ValidationRule>

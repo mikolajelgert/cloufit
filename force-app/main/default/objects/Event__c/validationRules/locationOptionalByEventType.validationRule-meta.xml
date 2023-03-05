@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>locationOptionalByEventType</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+AND(
+ISPICKVAL(Event_Type__c, &apos;Virtual&apos;),
+NOT(ISBLANK(Location__c))
+),
+AND(
+ISPICKVAL(Event_Type__c, &apos;In-Person&apos;),
+ISBLANK(Location__c)
+)
+)</errorConditionFormula>
+    <errorDisplayField>Location__c</errorDisplayField>
+    <errorMessage>Location field is only avaliable when In-Person event type is selected.</errorMessage>
+</ValidationRule>
