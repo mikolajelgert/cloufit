@@ -1,5 +1,5 @@
 @isTest
-public with sharing class ErrorLogTest {
+private with sharing class ErrorLogTest {
     @TestSetup
     static void setup(){
         List<Error_Log__c> errorLogs = new List<Error_Log__c>();

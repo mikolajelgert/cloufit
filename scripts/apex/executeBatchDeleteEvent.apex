@@ -5,6 +5,10 @@
 // You can also execute the entire file by running the command:
 //     SFDX: Execute Anonymous Apex with Editor Contents
 
-string tempvar = 'Enter_your_name_here';
-System.debug('Hello World!');
-System.debug('My name is ' + tempvar);
+BatchDeleteEvent batchJob = new BatchDeleteEvent();
+
+Id batchJobId = Database.executeBatch(batchJob, 200);
+
+AsyncApexJob aaj = [SELECT Id, Status, JobItemsProcessed, TotalJobItems, NumberOfErrors
+                    FROM AsyncApexJob WHERE ID =: batchJobId ];
+System.debug('Job Id: ' + batchJobid + ' Status: ' + aaj.Status);
