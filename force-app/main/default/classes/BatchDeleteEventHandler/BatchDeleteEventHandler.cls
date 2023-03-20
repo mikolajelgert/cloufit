@@ -1,5 +1,5 @@
 public with sharing class BatchDeleteEventHandler {
-    private static final String QUERY = 'SELECT Id, Name, End_Date_Time__c, Live__c FROM Event__c';
+    private static final String QUERY = 'SELECT Id, Name, End_Date_Time__c, Live__c FROM Event__c WHERE Live__c = false AND End_Date_Time__c <= LAST_N_MONTHS: 2';
 
     /*
     execute in executeBatchDeleteEvent.apex script
@@ -9,18 +9,18 @@ public with sharing class BatchDeleteEventHandler {
     }
 
     public static void deleteEvents(List<Event__c> eventList) {
-        Datetime twoMonthsOld = System.now().addMonths(-2);
-
-        for (Event__c event: eventList) {
-            if (event.End_Date_Time__c <= twoMonthsOld && event.Live__c == false) {
+        if (!eventList.isEmpty()) {
+            for (Event__c event: eventList) {
                 try {
                     delete(event);
                 }catch(DmlException ex) {
                     ex.getStackTraceString();
-                    ErrorLog.insertErrorLog(System.now(), 'Apex Batch Fail', 'Apex Batch failure during old events deletion.');
+                    ErrorLog.insertErrorLog(System.now(), 'Cause: ' + ex.getCause(),
+                    'Type: ' + ex.getTypeName() + '. Message: ' + ex.getMessage() + '. StackTrace: ' + ex.getStackTraceString());
                 }
             }
-        }
+        } else 
+        System.debug('List is empty');
     }
 
     public static void sendConfirmationEmailTo(String sendTo) {
