@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title="Event Information" icon-name="standard:event">
+         <div class="slds-m-around_x-small">
+             <lightning-input label="Name" name="Name" type="text" value={formFields.Name} onchange={changeHandler}
+             required></lightning-input>
+             <c-event-organizer-lookup-comp onselected={handleSelectedEventOrganizer}></c-event-organizer-lookup-comp>
+             <!-- <label class="slds-form-element__label" for="form-element-03">
+                <abbr class="slds-required" title="required">*</abbr><b>Start Date</b></label> -->
+             <lightning-input name="Start_Date_Time" label="Start Date" required type="datetime" value={formFields.Start_Date_Time} onchange={changeHandler}></lightning-input>
+             <lightning-input label="End Date" name="End_Date_Time" type="datetime" value={formFields.End_Date_Time} onchange={changeHandler}></lightning-input>
+             <lightning-input label="Max Attendees" name="Max_Seats" type="number" value={formFields.Max_Seats} onchange={changeHandler}
+             required></lightning-input>
+             <c-event-location-lookup-comp onselected={handleSelectedEventLocation}></c-event-location-lookup-comp></br>
+             <lightning-input-rich-text name="Event_Detail" value={formFields.Event_Detail} onchange={changeHandler}></lightning-input-rich-text></br>
+             <lightning-button label="Cancel" onclick={handleCancel} variant="brand-outline"></lightning-button>&nbsp;&nbsp;
+             <lightning-button label="Add Event" onclick={handleSave} variant="brand"></lightning-button>
+         </div>
+    </lightning-card>
+ </template>

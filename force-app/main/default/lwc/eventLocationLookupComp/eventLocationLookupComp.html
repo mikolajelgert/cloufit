@@ -1,0 +1,37 @@
+<template>
+    <!-- <div class="slds-form-element"> -->
+        <!-- <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+            <lightning-icon size="x-small" class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" icon-name="utility:search"></lightning-icon>
+            <lightning-input type="text" id="combobox-id-16" value={locationName}
+                onchange={handleKeyChange} onkeydown={handleClick} onclick={handleClick}
+                onblur={handleClick} aria-activedescendant="option1" label='Event Location'
+                aria-autocomplete="list" aria-controls="listbox-id-12" role="textbox" required>
+            </lightning-input>   
+        </div> -->
+        <div style="position: relative;">
+            <lightning-icon size="x-small" class="iconMargin slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" icon-name="utility:search" 
+            style="position: absolute; top: 32px; right: 0px; z-index: 10;"></lightning-icon>
+            <lightning-input type="text" id="combobox-id-16" value={locationName}
+                onchange={handleKeyChange} onkeydown={handleClick} onclick={handleClick}
+                onblur={handleClick} aria-activedescendant="option1" label='Event Location'
+                aria-autocomplete="list" aria-controls="listbox-id-12" role="textbox" required>
+            </lightning-input> 
+        </div>
+        <div if:true={messageResult}>
+            No Result Found.
+        </div>
+        <template if:true={showSearchedValues}>
+            <div class="slds-box" style="height: 130px; overflow-y: scroll;">
+                <ul class="" role="">
+                    <template for:each={locationList} for:item="location">
+                        <li class="slds-p-around_x-small" style="cursor: pointer;" key={location.Id}
+                            onclick={handleParentSelection} data-value={location.Id}
+                            data-label={location.Name}>
+                            {location.Name}
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+    <!-- </div> -->
+</template>
