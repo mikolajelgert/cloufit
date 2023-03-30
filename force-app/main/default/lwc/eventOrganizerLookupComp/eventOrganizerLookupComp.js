@@ -15,7 +15,6 @@ export default class EventOrganizerLookupComp extends LightningElement {
        this.messageResult = false;
 
        if (data) {
-           // TODO: Error handling 
            console.log('data:: ' + data.length);
            if(data.length > 0 && this.isShowResult){
                this.eventOrganizerList = data;                
@@ -30,7 +29,6 @@ export default class EventOrganizerLookupComp extends LightningElement {
            }  
                
        } else if (error) {
-           // TODO: Data handling
            this.eventOrganizerId =  '';
            this.eventOrganizerName =  '';
            this.eventOrganizerList = [];           

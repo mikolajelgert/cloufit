@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Event Details" icon-name="standard:event">
+        <lightning-tabset variant="scoped" >
+            <lightning-tab label="Event Details" value="default">
+                <c-event-details-comp record-id={recordId} object-api-name={objectApiName}></c-event-details-comp> 
+            </lightning-tab>
+            <lightning-tab label="Event Speakers">
+                Event Speakers content
+            </lightning-tab>
+            <lightning-tab label="Event Location">
+                <c-event-location-comp record-id={recordId}></c-event-location-comp>
+            </lightning-tab>
+            <lightning-tab label="Event Attendees">
+                Event attendees content
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>
+</template>
