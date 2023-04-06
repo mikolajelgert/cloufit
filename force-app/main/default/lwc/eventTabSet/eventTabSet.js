@@ -1,5 +1,4 @@
-import { LightningElement, api, wire} from 'lwc';
-import getLocationId from '@salesforce/apex/EventLocationDetails.getLocationId'
+import { LightningElement, api} from 'lwc';
 
 export default class EventTabSet extends LightningElement {
     @api recordId

@@ -1,0 +1,15 @@
+<template>
+    <div class="slds-m-around_x-small">
+        <lightning-button label="New Attendee" onclick={navigateNext} variant="brand"></lightning-button>
+        <div class="slds-m-top_medium">
+            <lightning-datatable 
+                data={eventAttendeesList} 
+                columns={columns} 
+                key-field="Id"
+                show-row-number-column
+                row-number-offset={rowOffset}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </div>
+    </div>
+</template>

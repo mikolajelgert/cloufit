@@ -5,13 +5,13 @@
                 <c-event-details-comp record-id={recordId} object-api-name={objectApiName}></c-event-details-comp> 
             </lightning-tab>
             <lightning-tab label="Event Speakers">
-                Event Speakers content
+                <c-event-speakers-comp record-id={recordId}></c-event-speakers-comp>
             </lightning-tab>
             <lightning-tab label="Event Location">
                 <c-event-location-comp record-id={recordId}></c-event-location-comp>
             </lightning-tab>
             <lightning-tab label="Event Attendees">
-                Event attendees content
+                <c-event-attendees-comp record-id={recordId}></c-event-attendees-comp>
             </lightning-tab>
         </lightning-tabset>
     </lightning-card>

@@ -1,0 +1,31 @@
+<template>
+    <div class="slds-m-around_x-small">
+        <lightning-button label="New Speaker" onclick={navigateNext} variant="brand"></lightning-button>
+        <template for:each={eventSpeakerList} for:item="eventSpeaker" >
+            <div class="slds-m-top_large" key={eventSpeaker.Id}>
+                <div class="demo-only" style="width:30rem">
+                    <article class="slds-tile slds-media">
+                        <div class="slds-m-top_xx-small">
+                            <div class="slds-media__figure">
+                                <span class="slds-avatar slds-avatar_circle slds-avatar_large">
+                                <img alt="" src="https://www.lightningdesignsystem.com/assets/images/avatar1.jpg" title="Speaker avatar" />
+                                </span>
+                            </div>
+                        </div>
+                    <div class="slds-media__body">
+                        <h3 title="Speaker name">
+                            <a onclick={navigateToSpeaker} data-id={eventSpeaker.Speaker__r.Id}>{eventSpeaker.Speaker__r.Name}</a>
+                        </h3>
+                        <div class="slds-tile__detail">
+                            <dl class="slds-list_vertical slds-wrap">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate" title="First Label">{eventSpeaker.Speaker__r.Email__c}</dt>
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Second Label">{eventSpeaker.Speaker__r.Phone__c}</dt>
+                            </dl>
+                        </div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+    </template>
+    </div>
+</template>
