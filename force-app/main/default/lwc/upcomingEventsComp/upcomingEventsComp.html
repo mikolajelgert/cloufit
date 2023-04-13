@@ -1,0 +1,20 @@
+<template>
+    <lightning-card title="Upcoming Events" icon-name="standard:event">
+        <div class="slds-m-around_medium">
+            <lightning-input type="search" label="Event Name" class="slds-m-vertical_small" onchange={handleNameSearchKey} 
+            value={nameSearchKey} ></lightning-input>
+            <lightning-input type="datetime" label="Start Date/Time" class="slds-m-vertical_small" onchange={handleStartDateSearchKey} 
+            value={startDateSearchKey}></lightning-input>
+            <lightning-input type="search" label="Event Location" class="slds-m-vertical_small" onchange={handleLocationSearchKey} 
+            value={locationSearchKey}></lightning-input>
+            <lightning-datatable 
+                data={upcomingEventsList} 
+                columns={columns} 
+                key-field="Id"
+                show-row-number-column
+                row-number-offset={rowOffset}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

@@ -11,13 +11,15 @@ export default class EventAttendeesComp extends NavigationMixin(LightningElement
         label: 'Name',
         fieldName: 'Name',
         type: 'text',
-        sortable: true
+        sortable: true,
+        cellAttributes: { iconName: 'standard:avatar' }
     },
     {
         label: 'Phone',
         fieldName: 'Phone',
         type: 'phone',
-        sortable: true
+        sortable: true,
+        cellAttributes: { iconName: 'standard:call' }
     },
     {
         label: 'Email',
@@ -36,8 +38,7 @@ export default class EventAttendeesComp extends NavigationMixin(LightningElement
         fieldName: 'Location',
         type: 'Lookup',
         sortable: true
-    }
-];
+    }];
 
     @wire(getEventAttendees, {eventRecordId: '$recordId'})
     retrieveEventAttendees({error, data}) {
