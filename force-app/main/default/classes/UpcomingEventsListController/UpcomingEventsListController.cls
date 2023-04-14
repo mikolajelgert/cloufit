@@ -6,12 +6,12 @@ public with sharing class UpcomingEventsListController {
         locationTextKey = '%' + locationTextKey + '%';
 
         List<Event__c> events = [SELECT Id, Name, Name__c, Event_Organizer__r.Name, Location__r.Name, Start_Date_Time__c
-        FROM Event__c WHERE Live__c = true];
+        FROM Event__c WHERE Live__c = true AND Start_Date_Time__c >= TODAY];
 
         if (nameTextKey != '' || locationTextKey != '' || startDateTextKey != null) {
             events = [SELECT Id, Name, Name__c, Event_Organizer__r.Name, Location__r.Name, Start_Date_Time__c
             FROM Event__c WHERE Live__c = true AND Name__c LIKE: nameTextKey AND Location__r.Name LIKE: locationTextKey
-            AND Start_Date_Time__c >=: startDateTextKey];
+            AND Start_Date_Time__c >=: startDateTextKey AND Start_Date_Time__c >= TODAY];
         }
         
         return events;
