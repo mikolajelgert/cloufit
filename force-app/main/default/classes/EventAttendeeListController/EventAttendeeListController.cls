@@ -24,7 +24,7 @@ public with sharing class EventAttendeeListController {
         return wrapList;
     }
 
-    public class WrapperClass {
+    private class WrapperClass {
         @AuraEnabled
         public String Name;
 

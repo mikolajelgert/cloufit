@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="My Accounts" icon-name="standard:event">
+        <div class="slds-m-around_x-small">
+            <div class="slds-m-around_x-small">
+                <lightning-combobox label={label}
+                                    name="Show records" 
+                                    value={value}
+                                    placeholder={recordsPerPage}
+                                    options={comboBoxOptions}
+                                    onchange={handleComboBoxChange}
+                                    style="width: 150px;">
+                                </lightning-combobox>
+            </div>
+            <lightning-datatable
+                data={userAccountsList}
+                columns={columns}
+                key-field="Id"
+                hide-checkbox-column
+                onrowaction={handleRowAction}>
+                    </lightning-datatable>
+            <div class="slds-var-m-around_x-small" style="display: flex;align-items: center; justify-content: center;">
+                    <lightning-button class="slds-var-m-around_x-small" 
+                                    label="Previous Page" 
+                                    variant="brand" 
+                                    onclick={handlePrevPage}
+                                    disabled={isPreviousDisabled}>
+                    </lightning-button>
+                <div class="slds-var-m-around_x-small">
+                    Page ({pageNumber} of {totalPageCount})
+                </div>
+                    <lightning-button class="slds-var-m-around_x-small" 
+                                    label="Next Page" 
+                                    variant="brand" 
+                                    onclick={handleNextPage}
+                                    disabled={isNextDisabled}>
+                    </lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>
