@@ -1,5 +1,5 @@
 @isTest
-private with sharing class DuplicateEventSpeakerHandlerTest {
+public with sharing class DuplicateEventSpeakerHandlerTest {
    
     @testSetup
     static void setup(){
