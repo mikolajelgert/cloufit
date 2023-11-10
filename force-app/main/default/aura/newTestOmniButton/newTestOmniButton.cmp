@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes, lightning:actionOverride, lightning:isUrlAddressable" access="global">
+    <iframe src="https://cloobees91-dev-ed.develop.lightning.force.com/lightning/cmp/omnistudio__vlocityLWCOmniWrapper?c__target=c:sampleEditAccountEnglish"
+    width="100%"
+    height="500px">
+    </iframe>
+</aura:component>	

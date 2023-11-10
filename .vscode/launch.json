@@ -10,7 +10,7 @@
       "request": "launch",
       "logFile": "${command:AskForLogFileName}",
       "stopOnEntry": true,
-      "trace": true
+      "trace": "all"
     }
   ]
 }

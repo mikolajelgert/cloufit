@@ -1,95 +1,67 @@
 import { LightningElement, wire, api } from 'lwc';
-import getUserAccountsByLimit from '@salesforce/apex/CommunityUserAccountsController.getCommunityUserAccountsByLimit';
 import getUserAllAccounts from '@salesforce/apex/CommunityUserAccountsController.getCommunityUserAllAccounts';
 import deleteAccountByUserAccess from '@salesforce/apex/CommunityUserAccountsController.deleteAccountByUserAccess';
 import { NavigationMixin } from 'lightning/navigation';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
+import Id from '@salesforce/user/Id';
 
 export default class CommunityUserPortalAccounts extends NavigationMixin(LightningElement) {
-    @api accountIdToDelete = '';
-    @api recordsPerPage = 10;
+    @api userId = Id;
+    recordsPerPage = 10;
     userAccountsList = [];
+    filteredAccounts = [];
     totalRecordCount; 
     pageNumber = 1;
     totalPageCount;
-    @api offset = 0;
     isPreviousDisabled;
     isNextDisabled;
     refreshTable;
 
-    columns = [{
-        label: 'Account Name',
-        fieldName: 'accountName',
-        type: 'text',
-        sortable: true
-    },
-    {
-        label: 'Account Number',
-        fieldName: 'accountNumber',
-        type: 'text',
-        sortable: true
-    },
-    {
-        label: 'SLA',
-        fieldName: 'accountSLA',
-        type: 'text',
-        sortable: true
-    },
-    {
-        label: 'Phone',
-        fieldName: 'accountPhone',
-        type: 'phone',
-        sortable: true
-    },
-    {
-        type: 'button-icon',
-        typeAttributes:
+    columns = [{ label: 'Account Name', fieldName: 'Name', type: 'text', sortable: true },
+        { label: 'Account Number', fieldName: 'AccountNumber', type: 'text', sortable: true },
+        { label: 'SLA', fieldName: 'SLA__c', type: 'text', sortable: true },
+        { label: 'Phone', fieldName: 'Phone', type: 'phone', sortable: true },
         {
-            iconName: 'utility:preview',
-            name: 'preview',
-            iconClass: 'slds-icon-text-success'
-        }
-    },
-    {
-        type: 'button-icon',
-        typeAttributes:
+            type: 'button-icon',
+            initialWidth: 100,
+            typeAttributes:
+            {
+                iconName: 'utility:preview',
+                name: 'preview',
+                iconClass: 'slds-icon-text-success'
+            }
+        },
         {
-            iconName: 'utility:delete',
-            name: 'delete',
-            iconClass: 'slds-icon-text-error'
-        }
-    }];
+            type: 'button-icon',
+            initialWidth: 100,
+            typeAttributes:
+            {
+                iconName: 'utility:delete',
+                name: 'delete',
+                iconClass: 'slds-icon-text-error'
+            }
+        }];
 
-    @wire(getUserAllAccounts)
-    retreiveUserAllAccounts({data, error}) {
-        if (data) {
-            this.totalRecordCount = data.length;
-        } else if (error) {
-            this.totalRecordCount = 0;
-        }
-    }
-
-    @wire(getUserAccountsByLimit, {recordsLimit: '$recordsPerPage', offset: '$offset'})
-    retreiveUserAccountsByLimit(result) {
+    @wire(getUserAllAccounts, {userId: '$userId'})
+    retrieveUserAllAccounts(result) {
         this.refreshTable = result;
         if (result.data) {
-            if (result.data.length > 0) {
-                this.userAccountsList = result.data;
-                this.handlePageChange();
-            } else {
-                this.userAccountsList = [];
-            }
-        } else if (result.error){
-            this.userAccountsList = [];
+            this.userAccountsList = result.data;
+            this.handlePageChange();
+            this.totalRecordCount = result.data.length;
+            this.calculateTotalPageCount();
+            this.filterAccountsByComboOption();
+        } else if(result.error) {
+            this.userAccountsList = result.error;
         }
     }
-
+    
     handleNextPage() {
         if (this.pageNumber < this.totalPageCount) {
             this.pageNumber += 1;
         }
-        this.offset += parseInt(this.recordsPerPage);
+        this.filterAccountsByComboOption();
         this.handlePageChange();
     }
 
@@ -97,28 +69,44 @@ export default class CommunityUserPortalAccounts extends NavigationMixin(Lightni
         if (this.pageNumber > 1) {
             this.pageNumber -= 1;
         }
-        this.offset -= parseInt(this.recordsPerPage);
+        this.filterAccountsByComboOption();
         this.handlePageChange();
     }
 
     handlePageChange() {
-        if (this.pageNumber === 1) {
-            this.isPreviousDisabled = true;
-        } else {
-            this.isPreviousDisabled = false;
-        }
-
         if (this.pageNumber >= this.totalPageCount) {
             this.isNextDisabled = true;
         } else {
             this.isNextDisabled = false;
         }
+
+        if (this.pageNumber === 1) {
+            this.isPreviousDisabled = true;
+        } else {
+            this.isPreviousDisabled = false;
+        }
     }
 
     handleComboBoxChange(event) {
-        this.offset = 0;
         this.pageNumber = 1;
         this.recordsPerPage = event.target.value;
+        this.calculateTotalPageCount();
+        this.handlePageChange();
+        this.filterAccountsByComboOption();
+    }
+
+    calculateTotalPageCount() {
+        this.totalPageCount = this.totalRecordCount < this.recordsPerPage ? 
+        1 : Math.ceil((this.totalRecordCount) / this.recordsPerPage);
+    }
+
+    filterAccountsByComboOption() {
+        this.filteredAccounts = [];
+        for (let i = (this.pageNumber - 1) * this.recordsPerPage; i < this.pageNumber * this.recordsPerPage; i++) {
+            if (i < this.totalRecordCount) {
+                this.filteredAccounts.push(this.userAccountsList[i]);
+            }
+        }
     }
 
     get label() {
@@ -127,29 +115,21 @@ export default class CommunityUserPortalAccounts extends NavigationMixin(Lightni
     }
 
     get comboBoxOptions() {
-        this.calculateTotalPageCount();
-
         let options = [];
         for(var i = 10; i < this.totalRecordCount + 10; i += 10) {
              options.push({label: i, value: i});
         }
-
         return options;
     }
 
-    calculateTotalPageCount() {
-        this.totalPageCount = this.totalRecordCount < this.recordsPerPage ? 
-        1 : Math.ceil((this.totalRecordCount) / this.recordsPerPage);
-    }
-
     handleRowAction(event) {
-        const rowId = event.detail.row.id;
+        let rowId = event.detail.row.Id;
 
         if (event.detail.action.name === 'preview') {
             this.previewAccount(rowId);
+            console.log('rowId: ' + rowId);
         } else if (event.detail.action.name === 'delete') {
-            this.accountIdToDelete = rowId;
-            deleteAccountByUserAccess({accountId: this.accountIdToDelete})
+            deleteAccountByUserAccess({accountId: rowId})
             .then(() => {
                 this.showSuccessToast();
                 refreshApex(this.refreshTable);
@@ -160,11 +140,11 @@ export default class CommunityUserPortalAccounts extends NavigationMixin(Lightni
         }
     }
 
-    previewAccount(rowId) {
+    previewAccount(recId) {
         this[NavigationMixin.Navigate]({
             type: 'standard__recordPage',
             attributes: {
-                recordId: rowId,
+                recordId: recId,
                 objectApiName: 'Account',
                 actionName: 'view'
             }
@@ -178,14 +158,14 @@ export default class CommunityUserPortalAccounts extends NavigationMixin(Lightni
           variant: "success"
         });
         this.dispatchEvent(event);
-      }
+    }
 
-      showFailToast(error) {
+    showFailToast(error) {
         const event = new ShowToastEvent({
             label: "Error deleting record",
             message: error.body.message,
             variant: "error"
           });
-          this.dispatchEvent(event);
-      }
+        this.dispatchEvent(event);
+    }
 }
